@@ -92,6 +92,12 @@
             if(!requestOptions.data){
                 requestOptions.data = {};
             }
+            
+            if (AppPath.indexOf('app.asar') === -1) {
+                this.log('App is not launched from app.asar, no updates');
+                this.end(2);
+                return false;
+            }
 
             // Send the current version along with the request
             requestOptions.data.current = packageInfo.version;
@@ -115,8 +121,8 @@
                             throw false;
                         }
 
-                        // Parse the response
-                        var response = JSON.parse(result);
+                        // Parse the 
+                        var response = typeof result === 'string' ? JSON.parse(result) : result;
 
                         // If the "last" property is not defined
                         if(!response.last){
